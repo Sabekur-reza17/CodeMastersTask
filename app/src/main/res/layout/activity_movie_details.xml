@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ui.adapters.screen.MovieDetailsActivity">
+    <ImageView
+        android:id="@+id/movede_back"
+        android:layout_width="match_parent"
+        android:src="@mipmap/ic_launcher"
+        android:layout_height="200dp"></ImageView>
+    <TextView
+        android:id="@+id/orgtile"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:id="@+id/overvie"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:id="@+id/tagline"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:id="@+id/voteaverage"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:id="@+id/poulariry"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+
+
+</LinearLayout>
