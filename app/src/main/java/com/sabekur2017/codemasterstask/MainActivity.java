@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import com.sabekur2017.codemasterstask.ui.adapters.TVSerieusAdapter;
 import com.sabekur2017.codemasterstask.ui.adapters.TrendingAdapter;
 import com.sabekur2017.codemasterstask.ui.adapters.screen.MovieDetailsActivity;
 import com.sabekur2017.codemasterstask.ui.adapters.screen.TvSeriesDetailsActivity;
+import com.sabekur2017.codemasterstask.utils.Networkcheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,19 +44,26 @@ public class MainActivity extends AppCompatActivity   {
     TrendingAdapter trendingAdapter;
     LinearLayoutManager linearLayoutManager;
     List<Result> movielist;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar=findViewById(R.id.login_progress);
         movieRecycler=findViewById(R.id.movie_reyclerview);
         tvrecylcerview=findViewById(R.id.tv_recyclerview);
         trendingrecyclerview=findViewById(R.id.trending_recyclerview);
         apiInterface= APIClient.createService(ApiInterface.class);
-        getpopularmoviedata();
-        getTvseries();
-        getTrending();
-        String movieid="577922";
+        if(Networkcheck.isConnectedToInternet(this)){
+            getpopularmoviedata();
+            getTvseries();
+            getTrending();
+        }else {
+            Toast.makeText(this, "check the internet connection", Toast.LENGTH_SHORT).show();
+        }
+
+       // String movieid="577922";
        //getMOviedeatils();
 
 
@@ -68,6 +77,7 @@ public class MainActivity extends AppCompatActivity   {
         String relaease="2020";
 
         Call<PopularMovie> call = apiInterface.getpopularmoviedata(apikey,shortby,relaease);
+        showLoading();
         call.enqueue(new Callback<PopularMovie>() {
             @Override
             public void onResponse(Call<PopularMovie> call, Response<PopularMovie> response) {
@@ -80,6 +90,7 @@ public class MainActivity extends AppCompatActivity   {
                     Log.d("moviedataone",movieresposndata);
 
                  movielist=fetchMovie(response);
+                 hideLoading();
                     //popularMovieAdapter.addAll(movielist);
                     linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
                     movieRecycler.setLayoutManager(linearLayoutManager);
@@ -90,7 +101,7 @@ public class MainActivity extends AppCompatActivity   {
                         @Override
                         public void onClick(View view, int position) {
                             Result result=movielist.get(position);
-                            Toast.makeText(MainActivity.this, "clicked"+result.getId(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(MainActivity.this, "clicked"+result.getId(), Toast.LENGTH_SHORT).show();
                           //  startActivity(new Intent(MainActivity.this, MovieDetailsActivity.class));
                             String movieid=String.valueOf(result.getId());
                             Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
@@ -127,6 +138,7 @@ public class MainActivity extends AppCompatActivity   {
         String shortby="vote_average.desc";
         String relaease="2020";
         Call<PopularTV> popularTVCall = apiInterface.gettvseries(apikey,shortby,relaease);
+        showLoading();
         popularTVCall.enqueue(new Callback<PopularTV>() {
             @Override
             public void onResponse(Call<PopularTV> call, Response<PopularTV> response) {
@@ -143,12 +155,13 @@ public class MainActivity extends AppCompatActivity   {
                     tvrecylcerview.setLayoutManager(linearLayoutManager);
                     tvSerieusAdapter = new TVSerieusAdapter(getApplicationContext(),tvlist);
                     tvrecylcerview.setAdapter(tvSerieusAdapter);
+                   hideLoading();
                     tvrecylcerview.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), tvrecylcerview, new RecyclerTouchListener.ClickListener() {
                         @Override
                         public void onClick(View view, int position) {
                             Result tvdata=movielist.get(position);
                             com.sabekur2017.codemasterstask.data.models.populartvseries.Result tvitem=tvlist.get(position);
-                            Toast.makeText(MainActivity.this, "clicked"+tvitem.getId(), Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(MainActivity.this, "clicked"+tvitem.getId(), Toast.LENGTH_SHORT).show();
                             //startActivity(new Intent(MainActivity.this, TvSeriesDetailsActivity.class));
                             String tvid=String.valueOf(tvdata.getId());
                             Intent intent = new Intent(MainActivity.this, TvSeriesDetailsActivity.class);
@@ -181,16 +194,19 @@ public class MainActivity extends AppCompatActivity   {
     private void getTrending(){
         String apikey="1a97f3b8d5deee1d649c0025f3acf75c";
         Call<TrendingContent> trendingContentCall = apiInterface.gettrending(apikey);
+        showLoading();
         trendingContentCall.enqueue(new Callback<TrendingContent>() {
             @Override
             public void onResponse(Call<TrendingContent> call, Response<TrendingContent> response) {
                 if(response.isSuccessful()){
+                    hideLoading();
                     Log.d("trendingresposne",response.body().getResults().toString());
                     List<com.sabekur2017.codemasterstask.data.models.trendingcontent.Result> trending=fetchTrending(response);
                     Log.d("trendinglist",String.valueOf(trending.size()));
                     trendingrecyclerview.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
                     trendingAdapter=new TrendingAdapter(getApplicationContext(),trending);
                     trendingrecyclerview.setAdapter(trendingAdapter);
+
                 }else {
                     Log.d("trendingerror",response.body().toString());
                 }
@@ -208,7 +224,14 @@ public class MainActivity extends AppCompatActivity   {
     }
 
 
+    private void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
 
+    }
+
+    private void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+    }
 
 
 }
