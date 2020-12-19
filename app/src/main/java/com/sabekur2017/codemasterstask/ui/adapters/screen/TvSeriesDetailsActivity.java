@@ -63,20 +63,30 @@ public class TvSeriesDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()){
                     JsonObject dta=response.body();
+                    if(dta !=null){
+                        try {
+                            Log.d("tvid",dta.get("id").getAsString());
+                            Log.d("tvtilel",dta.get("name").getAsString());
+                            String imageulr=BASE_URL_BACK+dta.get("backdrop_path").getAsString();
+                            RequestOptions options = new RequestOptions()
+                                    .placeholder(R.drawable.ic_launcher_background)
+                                    .error(R.drawable.ic_launcher_background);
+                            Glide.with(getApplicationContext()).load(imageulr).apply(options).into(tvback);
+                            tvttilel.setText("Title :"+dta.get("name").getAsString());
+                            tvttagline.setText("Tagline :"+dta.get("tagline").getAsString());
+                            tvtovervie.setText("Overview :"+dta.get("overview").getAsString());
+                            tvtvoteavrage.setText("Rating :"+dta.get("vote_average").getAsString());
+                            tvtpopularity.setText("Popularity :"+dta.get("popularity").getAsString());
+                            hideLoading();
+                        }catch (Exception e){
+                            Toast.makeText(TvSeriesDetailsActivity.this, "no data found", Toast.LENGTH_SHORT).show();
+                        }
 
-                    Log.d("tvid",dta.get("id").getAsString());
-                    Log.d("tvtilel",dta.get("name").getAsString());
-                    String imageulr=BASE_URL_BACK+dta.get("backdrop_path").getAsString();
-                    RequestOptions options = new RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_background);
-                    Glide.with(getApplicationContext()).load(imageulr).apply(options).into(tvback);
-                    tvttilel.setText(dta.get("name").getAsString());
-                    tvttagline.setText(dta.get("tagline").getAsString());
-                    tvtovervie.setText(dta.get("overview").getAsString());
-                    tvtvoteavrage.setText(dta.get("vote_average").getAsString());
-                    tvtpopularity.setText(dta.get("popularity").getAsString());
-                    hideLoading();
+
+                    }else {
+                        Toast.makeText(TvSeriesDetailsActivity.this, "no data found", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }
 

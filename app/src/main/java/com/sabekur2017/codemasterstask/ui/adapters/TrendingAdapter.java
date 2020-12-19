@@ -40,9 +40,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Trendi
     public void onBindViewHolder(@NonNull TrendingViewHolder holder, int position) {
         final Result trendingitem = trendinglist.get(position);
         final TrendingViewHolder tvViewHolder=holder;
-        tvViewHolder.trendingtitle.setText(trendingitem.getName());
-        tvViewHolder.trendingreleaseDate.setText(trendingitem.getFirstAirDate());
-        tvViewHolder.trendingrating.setText(String.valueOf(trendingitem.getVoteCount()));
+        tvViewHolder.trendingtitle.setText("Name :"+trendingitem.getName());
+        tvViewHolder.trendingreleaseDate.setText("AirDate :"+trendingitem.getFirstAirDate());
+        tvViewHolder.trendingrating.setText("Vote :"+String.valueOf(trendingitem.getVoteCount()));
         String imageulr=BASE_URL_IMG+trendingitem.getPosterPath();
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.ic_launcher_background)

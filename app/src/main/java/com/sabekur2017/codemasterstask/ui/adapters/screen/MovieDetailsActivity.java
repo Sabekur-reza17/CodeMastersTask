@@ -64,26 +64,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()){
                     JsonObject movieres=response.body();
-                    Gson gson=new Gson();
+                    if(movieres !=null){
+                        try {
+                            String imageulr=BASE_URL_IMG+movieres.get("backdrop_path").getAsString();
+                            RequestOptions options = new RequestOptions()
+                                    .placeholder(R.drawable.ic_launcher_background)
+                                    .error(R.drawable.ic_launcher_background);
+                            Glide.with(getApplicationContext()).load(imageulr).apply(options).into(back);
+                            ttilel.setText("Title :"+movieres.get("original_title").getAsString());
+                            ttagline.setText("Tagline :"+movieres.get("tagline").getAsString());
+                            tovervie.setText("Overview :"+movieres.get("overview").getAsString());
+                            tvoteavrage.setText("Rating :"+movieres.get("vote_average").getAsString());
+                            tpopularity.setText("Popularity :"+movieres.get("popularity").getAsString());
+                            hideLoading();
+                        }catch (Exception e){
+                            Toast.makeText(MovieDetailsActivity.this, "no data found", Toast.LENGTH_SHORT).show();
+                        }
 
+                    }else {
+                        Toast.makeText(MovieDetailsActivity.this, "no data found", Toast.LENGTH_SHORT).show();
+                    }
 
-                    Log.d("movieid",movieres.get("id").getAsString());
-                    Log.d("movietilel",movieres.get("original_title").getAsString());
-                    Log.d("movietilel",movieres.get("popularity").getAsString());
-                    Log.d("movietilel",movieres.get("overview").getAsString());
-                    Log.d("movietilel",movieres.get("tagline").getAsString());
-                    Log.d("movietilel",movieres.get("vote_average").getAsString());
-                    String imageulr=BASE_URL_IMG+movieres.get("backdrop_path").getAsString();
-                    RequestOptions options = new RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_background);
-                    Glide.with(getApplicationContext()).load(imageulr).apply(options).into(back);
-                    ttilel.setText(movieres.get("original_title").getAsString());
-                    ttagline.setText(movieres.get("tagline").getAsString());
-                    tovervie.setText(movieres.get("overview").getAsString());
-                    tvoteavrage.setText(movieres.get("vote_average").getAsString());
-                    tpopularity.setText(movieres.get("popularity").getAsString());
-                    hideLoading();
 
 
                 }

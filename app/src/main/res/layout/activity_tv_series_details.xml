@@ -18,35 +18,41 @@
         android:id="@+id/tv_back"
         android:layout_width="match_parent"
         android:src="@mipmap/ic_launcher"
+        android:layout_marginBottom="8dp"
         android:layout_height="200dp"></ImageView>
     <TextView
         android:id="@+id/tvorgtile"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
     <TextView
         android:id="@+id/tvovervie"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
     <TextView
         android:id="@+id/tvtagline"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
     <TextView
         android:id="@+id/tvvoteaverage"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
     <TextView
         android:id="@+id/tvpoulariry"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></TextView>
 
